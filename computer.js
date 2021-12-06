@@ -77,7 +77,7 @@ function dropPiece (source, target) {
     promotion: 'q' /* Pawns will be promoted to queens by default */
   })
   if (game.game_over()) {
-    document.getElementById("p1").innerHTML = "GAME OVER" /* Update text above board to show game over if game is over */
+    document.getElementById("p1").innerHTML = "GAME OVER!" /* Update text above board to show game over if game is over */
   }
   if (move === null) {
     return 'snapback' /* Cancel move if it is invalid */
