@@ -40,22 +40,22 @@ function pieceWeight (piece) {
     return 0; /* If space is empty */
   }
   else if (piece.type === 'p') {
-    return piece.color === 'b' ? 10: -10; /* If piece is a pawn */
+    return piece.color === 'b' ? 1: -1; /* If piece is a pawn */
   }
   else if (piece.type === 'r') {
-    return piece.color === 'b' ? 50: -50; /* If piece is a rook */
+    return piece.color === 'b' ? 5: -5; /* If piece is a rook */
   }
   else if (piece.type === 'n') {
-    return piece.color === 'b' ? 30: -30; /* If piece is a knight */
+    return piece.color === 'b' ? 3: -3; /* If piece is a knight */
   }
   else if (piece.type === 'b') {
-    return piece.color === 'b' ? 30: -30; /* If piece is a bishop */
+    return piece.color === 'b' ? 3: -3; /* If piece is a bishop */
   }
   else if (piece.type === 'q') {
-    return piece.color === 'b' ? 90: -90; /* If piece is a queen */
+    return piece.color === 'b' ? 9: -9; /* If piece is a queen */
   }
   else if (piece.type === 'k') {
-    return piece.color === 'b' ? 900: -900; /* If piece is a king */
+    return piece.color === 'b' ? 90: -90; /* If piece is a king */
   }
   /* All above statements return positive values if piece colour is black as AI plays as black */
 }
