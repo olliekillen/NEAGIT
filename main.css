@@ -1,0 +1,19 @@
+.button {
+    background-color: #4CAF50;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+    width: 50%;
+    height: 20vh;
+    border: none;
+    color: white;
+    padding: 5vh 10vh;
+    text-align: center;
+    display: block;
+    font-size: 2vh;
+}
+
+a:link{
+  text-decoration: none;
+}

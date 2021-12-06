@@ -1,0 +1,39 @@
+.settingsDiv {
+    box-sizing:border-box;
+    background-color: #4CAF50;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+    width: 50%;
+    height: 20vh;
+    border: none;
+    color: white;
+    padding: 5vh 10vh;
+    text-align: center;
+    display: block;
+    font-size: 2vh;
+}
+
+.settingsBtn {
+    display: inline-block;
+    font-size: 2vh;
+    width: 12vh;
+    text-align: center;
+    color: #4CAF50;
+    background-color: white;
+    border: none;
+}
+
+.divTitle {
+    background-color: #4CAF50;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 3vh;
+    width: 100%;
+    border: none;
+    color: white;
+    text-align: center;
+    display: block;
+    font-size: 2vh;
+}
