@@ -16,23 +16,38 @@ function computerMove () {
     return /* Cancel computer move if there are no available moves, as this means that the game is over */
   }
   var bestMove = calcBestMove(possibleMoves);
-  game.move(possibleMoves[bestMove]); /* Makes the move number returned by calcBestMove */
+  game.move(bestMove); /* Makes the move number returned by calcBestMove */
   board.position(game.fen()); /* Update the board to display the move */
 }
 
-function calcBestMove(moves) {
-  var score=-9999;
-  var moveToMake= null; 
+function addMovesToTree(moves,tree,prevMove) {
   for (let i=0; i<moves.length; i++) {
-    game.move(moves[i]); /* Make every move possible */
-    tempScore = boardScore(game.board()); /* Calculate the board score when that move has been made*/
-    if (tempScore > score) { /* If that move returns the best board score yet, then store that move */
-      score = tempScore;
-      moveToMake = i;
-    }
-    game.undo() /* Undo the move and restart the loop */
+    game.move(moves[i]);
+    moveScore = boardScore(game.board());
+    game.undo();
+    var moveObject = {move:moves[i], prevMove:prevMove, score:moveScore};
+    tree.push(moveObject);
   }
-  return moveToMake; /* Return the stored move */
+}
+
+function generateMoveTree(moves) {
+  var moveTree = [];
+  addMovesToTree(moves,moveTree,null);
+  return moveTree;
+}
+
+function calcBestMove(moves) {
+  var moveTree = generateMoveTree(moves);
+  var score = -9999;
+  var moveToMake = null;
+  for (let i = 0; i < moveTree.length; i++) {
+    tempScore = moveTree[i].score;
+    if (tempScore > score) {
+      score = tempScore;
+      moveToMake = moveTree[i].move;
+    }
+  }
+  return moveToMake;
 }
 
 function pieceWeight (piece) {
