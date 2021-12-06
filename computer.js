@@ -22,7 +22,7 @@ function computerMove () {
 
 function calcBestMove(moves) {
   var score=-9999;
-  var moveToMake= null; /* Starts as a random value for scenarios where all moves return a score of 0 to stop getting stuck in loops of making the same move */
+  var moveToMake= null; 
   for (let i=0; i<moves.length; i++) {
     game.move(moves[i]); /* Make every move possible */
     tempScore = boardScore(game.board()); /* Calculate the board score when that move has been made*/
