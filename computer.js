@@ -1,6 +1,115 @@
-var board = null
-var game = new Chess()
+var board = null;
+var game = new Chess();
 
+/* Below are the piece-square tables which allow the AI to play positionally */
+var wq = [[-20,-10,-10,- 5,- 5,-10,-10,-20],
+          [-10,  0,  0,  0,  0,  0,  0,-10],
+          [-10,  0,  5,  5,  5,  5,  0,-10],
+          [- 5,  0,  5,  5,  5,  5,  0,- 5],
+          [  0,  0,  5,  5,  5,  5,  0,- 5],
+          [-10,  5,  5,  5,  5,  5,  0,-10],
+          [-10,  0,  5,  0,  0,  0,  0,-10],
+          [-20,-10,-10,- 5,- 5,-10,-10,-20]]; /* White Queen */
+          
+var wp = [[  0,  0,  0,  0,  0,  0,  0,  0],
+          [ 50, 50, 50, 50, 50, 50, 50, 50],
+          [ 10, 10, 20, 30, 30, 20, 10, 10],
+          [  5,  5, 10, 25, 25, 10,  5,  5],
+          [  0,  0,  0, 20, 20,  0,  0,  0],
+          [  5,- 5,-10,  0,  0,-10,- 5,  5],
+          [  5, 10, 10,-20,-20, 10, 10,  5],
+          [  0,  0,  0,  0,  0,  0,  0,  0]]; /* White Pawn */
+          
+var wr = [[  0,  0,  0,  0,  0,  0,  0,  0],
+          [  5, 10, 10, 10, 10, 10, 10,  5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [  0,  0,  0,  5,  5,  0,  0,  0]]; /* White Rook */
+          
+var wb = [[-20,-10,-10,-10,-10,-10,-10,-20],
+          [  0,  0,  0,  0,  0,  0,  0,-10],
+          [-10,  0,  5, 10, 10,  5,  0,-10],
+          [-10,  5,  5, 10, 10,  5,  5,-10],
+          [-10,  0, 10, 10, 10, 10,  0,-10],
+          [-10, 10, 10, 10, 10, 10, 10,-10],
+          [-10,  5,  0,  0,  0,  0,  5,-10],
+          [-20,-10,-10,-10,-10,-10,-10,-20]]; /* White Bishop */
+
+var wk = [[-30,-40,-40,-50,-50,-40,-40,-30],
+          [-30,-40,-40,-50,-50,-40,-40,-30],
+          [-30,-40,-40,-50,-50,-40,-40,-30],
+          [-30,-40,-40,-50,-50,-40,-40,-30],
+          [-20,-30,-30,-40,-40,-30,-30,-20],
+          [-10,-20,-20,-20,-20,-20,-20,-10],
+          [ 20, 20,  0,  0,  0,  0, 20, 20],
+          [ 20, 30, 10,  0,  0, 10, 30, 20]]; /* White King */
+          
+var wn = [[-50,-40,-30,-30,-30,-30,-40,-50],
+          [-40,-20,  0,  0,  0,  0,-20,-40],
+          [-30,  0, 10, 15, 15, 10,  0,-30],
+          [-30,  5, 15, 20, 20, 15,  5,-30],
+          [-30,  0, 15, 20, 20, 15,  0,-30],
+          [-30,  5, 10, 15, 15, 10,  5,-30],
+          [-40,-20,  0,  5,  5,  0,-20,-40],
+          [-50,-40,-10,- 5,- 5,-10,-40,-50]]; /* White Knight */
+          
+var bq = [[-20,-10,-10,- 5,- 5,-10,-10,-20],
+          [-10,  0,  0,  0,  0,  0,  0,-10],
+          [-10,  0,  5,  5,  5,  5,  0,-10],
+          [- 5,  0,  5,  5,  5,  5,  0,  0],
+          [- 5,  0,  5,  5,  5,  5,  0,- 5],
+          [-10,  5,  5,  5,  5,  5,  0,-10],
+          [-10,  0,  5,  0,  0,  0,  0,-10],
+          [-20,-10,-10,- 5,- 5,-10,-10,-20]]; /* Black Queen */
+          
+var bp = [[  0,  0,  0,  0,  0,  0,  0,  0],
+          [  5, 10, 10,-20,-20, 10, 10,  5],
+          [  5,- 5,-10,  0,  0,-10,- 5,  5],
+          [  0,  0,  0, 20, 20,  0,  0,  0],
+          [  5,  5, 10, 25, 25, 10,  5,  5],
+          [ 10, 10, 20, 30, 30, 20, 10, 10],
+          [ 50, 50, 50, 50, 50, 50, 50, 50],
+          [  0,  0,  0,  0,  0,  0,  0,  0]]; /* Black Pawn */
+          
+var br = [[  0,  0,  0,  5,  5,  0,  0,  0],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [- 5,  0,  0,  0,  0,  0,  0,- 5],
+          [  5, 10, 10, 10, 10, 10, 10,  5],
+          [  0,  0,  0,  0,  0,  0,  0,  0]]; /* Black Rook */
+          
+var bb = [[-20,-10,-10,-10,-10,-10,-10,-20],
+          [-10,  5,  0,  0,  0,  0,  5,-10],
+          [-10, 10, 10, 10, 10, 10, 10,-10],
+          [-10,  0, 10, 10, 10, 10,  0,-10],
+          [-10,  5,  5, 10, 10,  5,  5,-10],
+          [-10,  0,  5, 10, 10,  5,  0,-10],
+          [-10,  0,  0,  0,  0,  0,  0,-10],
+          [-20,-10,-10,-10,-10,-10,-10,-20]]; /* Black Bishop */
+         
+var bk = [[ 20, 30, 10,  0,  0, 10, 30, 20],
+          [ 20, 20,  0,  0,  0,  0, 20, 20],
+          [-10,-20,-20,-20,-20,-20,-20,-10],
+          [-20,-30,-30,-40,-40,-30,-30,-20],
+          [-30,-40,-40,-50,-50,-40,-40,-30],
+          [-30,-40,-40,-50,-50,-40,-40,-30],
+          [-30,-40,-40,-50,-50,-40,-40,-30],
+          [-30,-40,-40,-50,-50,-40,-40,-30]]; /* Black King */
+          
+var bn = [[-50,-40,-10,- 5,- 5,-10,-40,-50],
+          [-40,-20,  0, 05,  5,  0,-20,-40],
+          [-30,  5, 10, 15, 15, 10,  5,-30],
+          [-30,  0, 15, 20, 20, 15,  0,-30],
+          [-35,  5, 15, 20, 20, 15,  5,-30],
+          [-30,  0, 10, 15, 15, 10,  0,-30],
+          [-40, 20,  0,  0,  0,  0,-20,-40],
+          [-50,-40,-30,-30,-30,-30,-40,-50]]; /* Black Knight */
+          
 function pickUpPiece (source, piece, position, orientation) {
   if (game.game_over()) {
     return false /* Do not allow player to pick up piece if the game is over */
@@ -50,27 +159,28 @@ function calcBestMove(moves) {
   return moveToMake;
 }
 
-function pieceWeight (piece) {
+function pieceWeight (boardArray,x,y) {
+  var piece = boardArray[x][y]
   if (piece === null){
     return 0; /* If space is empty */
   }
   else if (piece.type === 'p') {
-    return piece.color === 'b' ? 1: -1; /* If piece is a pawn */
+    return piece.color === 'b' ? 100 + bp[x][y]: -(100 + wp[x][y]); /* If piece is a pawn */
   }
   else if (piece.type === 'r') {
-    return piece.color === 'b' ? 5: -5; /* If piece is a rook */
+    return piece.color === 'b' ? 500 + br[x][y]: -(500 + wr[x][y]); /* If piece is a rook */
   }
   else if (piece.type === 'n') {
-    return piece.color === 'b' ? 3: -3; /* If piece is a knight */
+    return piece.color === 'b' ? 320 + bn[x][y]: -(320 + wn[x][y]); /* If piece is a knight */
   }
   else if (piece.type === 'b') {
-    return piece.color === 'b' ? 3: -3; /* If piece is a bishop */
+    return piece.color === 'b' ? 330 + bb[x][y]: -(330 + wb[x][y]); /* If piece is a bishop */
   }
   else if (piece.type === 'q') {
-    return piece.color === 'b' ? 9: -9; /* If piece is a queen */
+    return piece.color === 'b' ? 900 + bq[x][y]: -(900 + wq[x][y]); /* If piece is a queen */
   }
   else if (piece.type === 'k') {
-    return piece.color === 'b' ? 90: -90; /* If piece is a king */
+    return piece.color === 'b' ? 20000 + bk[x][y]: -(20000 + bk[x][y]); /* If piece is a king */
   }
   /* All above statements return positive values if piece colour is black as AI plays as black */
 }
@@ -79,7 +189,7 @@ function boardScore (boardArray) {
   var totalScore = 0;
   for (let i=0; i<8; i++) {
     for (let j=0; j<8; j++) {
-        totalScore = totalScore + pieceWeight(boardArray[i][j]); /* Loops through every position on the board, and adds that position's weighting onto the total score */
+        totalScore = totalScore + pieceWeight(boardArray,i,j); /* Loops through every position on the board, and adds that position's weighting onto the total score */
     }
   }
   return totalScore;
