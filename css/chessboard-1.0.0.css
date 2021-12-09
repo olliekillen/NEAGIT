@@ -54,8 +54,8 @@
 }
 
 #board{
-  width: 100%;
-  max-width: 850px;
+  width: 500px;
+  height: 500px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -68,7 +68,28 @@
   height: 100%;
 }
 
-#p1{
+#gameOverText{
   display: block;
   text-align: center;
+}
+
+#difficultyBtns{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#difficultyText{
+  display: inline-block;
+  text-align: center;
+  margin: 15px;
+}
+
+.difficultyBtn {
+  display: inline-block;
+  width: 30px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
 }

@@ -1,5 +1,6 @@
 var board = null;
 var game = new Chess();
+var difficulty = 1;
 
 /* Below are the piece-square tables which allow the AI to play positionally */
 var wq = [[-20,-10,-10,- 5,- 5,-10,-10,-20],
@@ -124,39 +125,32 @@ function computerMove () {
   if (possibleMoves.length === 0) {
     return /* Cancel computer move if there are no available moves, as this means that the game is over */
   }
-  var bestMove = calcBestMove(possibleMoves);
+  var bestMove = negaMax(difficulty).move;
   game.move(bestMove); /* Makes the move number returned by calcBestMove */
   board.position(game.fen()); /* Update the board to display the move */
 }
 
-function addMovesToTree(moves,tree,prevMove) {
-  for (let i=0; i<moves.length; i++) {
-    game.move(moves[i]);
-    moveScore = boardScore(game.board());
-    game.undo();
-    var moveObject = {move:moves[i], prevMove:prevMove, score:moveScore};
-    tree.push(moveObject);
-  }
-}
-
-function generateMoveTree(moves) {
-  var moveTree = [];
-  addMovesToTree(moves,moveTree,null);
-  return moveTree;
-}
-
-function calcBestMove(moves) {
-  var moveTree = generateMoveTree(moves);
-  var score = -9999;
-  var moveToMake = null;
-  for (let i = 0; i < moveTree.length; i++) {
-    tempScore = moveTree[i].score;
-    if (tempScore > score) {
-      score = tempScore;
-      moveToMake = moveTree[i].move;
+function negaMax(depth) {
+  if ((depth == 0) || (game.game_over())) {return game.turn() == 'b' ? {score: boardScore(game.board()), move:null} : {score: -1 * boardScore(game.board()), move:null};} /* If current player is black return positive score as computer plays as black */
+  var bestScore = -9999;
+  var bestMove = null;
+  var moves = game.moves(); /* Get all possible moves */
+  for (var i=0; i<moves.length; i++) {
+    game.move(moves[i]); /* Make a possible move */
+    var score = -1 * negaMax(depth-1).score; /* Needs to be negative as it's from the opponents point of view */
+    game.undo(); /* Undo move in preparation for trying next one */
+    if (score>bestScore) {
+      bestScore = score;
+      bestMove = moves[i]; /* If that score is the best yet, store that move and score */
     }
   }
-  return moveToMake;
+  return {score: bestScore, move: bestMove}; /* Needs to return score for recursive part, and move for the compiuter to know which move to make */
+}
+
+function setDifficulty(modifier) {
+  difficulty = difficulty + modifier; /* Offset difficulty by modifier */
+  if (difficulty < 1) {difficulty = 1} /* Computer needs to at least look at the next move */
+  document.getElementById("difficultyText").innerHTML = "Difficulty: "+difficulty; /* Set element in HTML to show difficulty*/
 }
 
 function pieceWeight (boardArray,x,y) {
@@ -202,7 +196,7 @@ function dropPiece (source, target) {
     promotion: 'q' /* Pawns will be promoted to queens by default */
   })
   if (game.game_over()) {
-    document.getElementById("p1").innerHTML = "GAME OVER!" /* Update text above board to show game over if game is over */
+    document.getElementById("gameOverText").innerHTML = "GAME OVER!" /* Update text above board to show game over if game is over */
   }
   if (move === null) {
     return 'snapback' /* Cancel move if it is invalid */
