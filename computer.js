@@ -128,6 +128,9 @@ function computerMove () {
   var bestMove = negaMax(difficulty).move;
   game.move(bestMove); /* Makes the move number returned by calcBestMove */
   board.position(game.fen()); /* Update the board to display the move */
+  if (game.game_over()) {
+    document.getElementById("gameOverText").innerHTML = "GAME OVER!" /* Update text above board to show game over if game is over */
+  }
 }
 
 function negaMax(depth) {
@@ -186,6 +189,18 @@ function boardScore (boardArray) {
         totalScore = totalScore + pieceWeight(boardArray,i,j); /* Loops through every position on the board, and adds that position's weighting onto the total score */
     }
   }
+  if (game.turn()=='b') {
+     totalScore = game.in_checkmate() ? totalScore - 20000: totalScore;
+     totalScore = game.in_stalemate() ? totalScore + 20000: totalScore;
+  }
+  else {
+     totalScore = game.in_checkmate() ? totalScore + 20000: totalScore;
+     totalScore = game.in_stalemate() ? totalScore - 20000: totalScore;
+  }
+  /* Win + 20000
+     Loss - 20000
+     Stalemate - 20000
+     Draw = 0 */
   return totalScore;
 }
 
