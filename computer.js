@@ -128,9 +128,6 @@ function computerMove () {
   var bestMove = negaMax(difficulty).move;
   game.move(bestMove); /* Makes the move number returned by calcBestMove */
   board.position(game.fen()); /* Update the board to display the move */
-  if (game.game_over()) {
-    document.getElementById("gameOverText").innerHTML = game.in_checkmate() ? "GAME OVER - YOU LOSE!": "GAME OVER - DRAW!" /* Update text above board to show game over if game is over */
-  }
   if (boardScore(game.board()) == 0) {  
   document.getElementById("gameOverText").innerHTML = "NEITHER SIDE HAS THE ADVANTAGE"
   }
@@ -139,6 +136,9 @@ function computerMove () {
   }
   else {  
   document.getElementById("gameOverText").innerHTML = "WHITE HAS THE ADVANTAGE"
+  }
+  if (game.game_over()) {
+    document.getElementById("gameOverText").innerHTML = game.in_checkmate() ? "GAME OVER - YOU LOSE!": "GAME OVER - DRAW!" /* Update text above board to show game over if game is over */
   }
 }
 
