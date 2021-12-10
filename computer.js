@@ -131,6 +131,15 @@ function computerMove () {
   if (game.game_over()) {
     document.getElementById("gameOverText").innerHTML = "GAME OVER!" /* Update text above board to show game over if game is over */
   }
+  if (boardScore(game.board()) == 0) {  
+  document.getElementById("gameOverText").innerHTML = "NEITHER SIDE HAS THE ADVANTAGE"
+  }
+  else if (boardScore(game.board()) > 0) {  
+  document.getElementById("gameOverText").innerHTML = "BLACK HAS THE ADVANTAGE"
+  }
+  else {  
+  document.getElementById("gameOverText").innerHTML = "WHITE HAS THE ADVANTAGE"
+  }
 }
 
 function negaMax(depth) {
