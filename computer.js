@@ -186,7 +186,7 @@ function pieceWeight (boardArray,x,y) {
     return piece.color === 'b' ? 900 + bq[x][y]: -(900 + wq[x][y]); /* If piece is a queen */
   }
   else if (piece.type === 'k') {
-    return piece.color === 'b' ? 20000 + bk[x][y]: -(20000 + bk[x][y]); /* If piece is a king */
+    return piece.color === 'b' ? 20000 + bk[x][y]: -(20000 + wk[x][y]); /* If piece is a king */
   }
   /* All above statements return positive values if piece colour is black as AI plays as black */
 }
