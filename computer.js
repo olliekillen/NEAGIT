@@ -129,7 +129,7 @@ function computerMove () {
   game.move(bestMove); /* Makes the move number returned by calcBestMove */
   board.position(game.fen()); /* Update the board to display the move */
   if (game.game_over()) {
-    document.getElementById("gameOverText").innerHTML = "GAME OVER!" /* Update text above board to show game over if game is over */
+    document.getElementById("gameOverText").innerHTML = game.in_checkmate() ? "GAME OVER - YOU LOSE!": "GAME OVER - DRAW!" /* Update text above board to show game over if game is over */
   }
   if (boardScore(game.board()) == 0) {  
   document.getElementById("gameOverText").innerHTML = "NEITHER SIDE HAS THE ADVANTAGE"
@@ -220,7 +220,7 @@ function dropPiece (source, target) {
     promotion: 'q' /* Pawns will be promoted to queens by default */
   })
   if (game.game_over()) {
-    document.getElementById("gameOverText").innerHTML = "GAME OVER!" /* Update text above board to show game over if game is over */
+    document.getElementById("gameOverText").innerHTML = game.in_checkmate() ? "GAME OVER - YOU WIN!": "GAME OVER - DRAW!" /* Update text above board to show game over if game is over */
   }
   if (move === null) {
     return 'snapback' /* Cancel move if it is invalid */
