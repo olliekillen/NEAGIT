@@ -162,7 +162,8 @@ function negaMax(depth) {
 function setDifficulty(modifier) {
   difficulty = difficulty + modifier; /* Offset difficulty by modifier */
   if (difficulty < 1) {difficulty = 1} /* Computer needs to at least look at the next move */
-  document.getElementById("difficultyText").innerHTML = "Difficulty: "+difficulty; /* Set element in HTML to show difficulty*/
+  if (difficulty > 3) {difficulty = 3} /* Any difficulty above 3 takes too long to make a move*/
+  document.getElementById("difficultyText").innerHTML = "Difficulty: "+difficulty; /* Set element in HTML to show difficulty */
 }
 
 function pieceWeight (boardArray,x,y) {
