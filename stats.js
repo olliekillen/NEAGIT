@@ -1,9 +1,7 @@
-function showLogIn() {
-    document.getElementById("logInContainer").style.display = "block";
-    document.getElementById("registerContainer").style.display = "none";
+function showRegister() {
+    document.getElementById("registerContainer").style.display = "flex";
 }
 
-function showRegister() {
-    document.getElementById("registerContainer").style.display = "block";
-    document.getElementById("logInContainer").style.display = "none";
+function hideRegister() {
+    document.getElementById("registerContainer").style.display = "none";
 }

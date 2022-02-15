@@ -9,24 +9,21 @@
 <body>
     <div id="notLoggedIn">
         <p>You Are Not Logged In</p>
-        <button class="btn" id="openLogIn" onclick="showLogIn()">Log In</button>
+        <form class="form" method="post" action="http://localhost/NEA/login.php">
+            <input type="text" class="textBox" id="usernameLogInput" name="usernameLogInput" placeholder="Username" required></input>
+            <input type="text" class="textBox" id="passwordLogInput" name="passwordLogInput" placeholder="Password" required></input>
+            <input type="submit" class="submitBtn" id="logInBtn" value="Log In"></input>
+        </form>
         <button class="btn" id="openRegister" onclick="showRegister()">Register</button>
     </div>
 
-    <div id="logInContainer">
-        <form method="post" action="http://localhost/NEA/login.php">
-        <input type="text" class="textBox" id="usernameLogInput" name="usernameLogInput" placeholder="Username" required></input>
-        <input type="text" class="textBox" id="passwordLogInput" name="passwordLogInput" placeholder="Password" required></input>
-        <input type="submit" class="submitBtn" id="logInBtn" value="Log In"></input>
-        </form>
-    </div>
-
-    <div id="registerContainer">
-        <form method="post" action="http://localhost/NEA/register.php">
+    <div id="registerContainer" class="divBackground">
+        <form class="form" method="post" action="http://localhost/NEA/register.php">
         <input type="text" class="textBox" id="usernameRegInput" name="usernameRegInput" placeholder="Username" required></input>
         <input type="text" class="textBox" id="passwordRegInput" name="passwordRegInput" placeholder="Password" required></input>
         <input type="text" class="textBox" id="emailRegInput" name="emailRegInput" placeholder="Email" required></input>
         <input type="submit" class="submitBtn" id="registerBtn" value="Register"></input>
+        <button class="closeBtn" id="registerCloseBtn" onclick="hideRegister()">Close</button>
         </form>
     </div>
 
